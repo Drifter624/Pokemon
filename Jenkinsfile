@@ -1,41 +1,44 @@
 pipeline {
     agent any
+    
     stages {
-        stage('Checkout') {
+        // Clonar el repositorio desde GitHub
+        stage('Clone Repository') {
             steps {
-                checkout scm
+                git branch: 'master', url: 'https://github.com/Drifter624/Pokemon.git'
             }
         }
-        stage('Build') {
+        
+        // Construir la imagen Docker con un nombre específico
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Inicia el contenedor Docker
-                    sh 'docker run --name my_container -d -p 80:80 my_image'
+                    // El método 'docker.build' construye la imagen con un nombre específico
+                    def customImage = docker.build('pokemon-api-docker')
                 }
             }
         }
-        stage('Test') {
+        
+        // Levantar el contenedor con la imagen construida
+        stage('Run Docker Container') {
             steps {
                 script {
-                    // Aquí puedes agregar comandos para ejecutar pruebas
-                    sh 'echo "Running tests..."'
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    // Comandos para desplegar, si es necesario
-                    sh 'echo "Deploying..."'
+                    // Correr el contenedor basado en la imagen que construiste en la etapa anterior
+                    docker.image('pokemon-api-docker').inside {
+                        echo 'Docker container is up and running!'
+                        // Aquí puedes ejecutar más comandos dentro del contenedor si es necesario
+                        // Por ejemplo, correr tests, levantar servicios, etc.
+                    }
                 }
             }
         }
     }
+
+    // Bloque 'post' para realizar acciones después del pipeline
     post {
         always {
-            echo 'Cleaning up...'
-            sh 'docker stop my_container || true'
-            sh 'docker rm my_container || true'
+            echo 'Pipeline completed.'
+            cleanWs() // Limpia el workspace después de la ejecución
         }
     }
 }

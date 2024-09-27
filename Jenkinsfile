@@ -13,8 +13,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // El método 'docker.build' construye la imagen con un nombre específico
-                    def customImage = docker.build('pokemon-api-docker')
+                    // El método 'docker.build' construye la imagen usando un Dockerfile del repositorio clonado
+                    def customImage = docker.build('pokemon-api-docker', '.')
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     // Correr el contenedor basado en la imagen que construiste en la etapa anterior
-                    docker.image('pokemon-api-docker').inside {
+                    customImage.run('-d --name pokemon-container') {
                         echo 'Docker container is up and running!'
                         // Aquí puedes ejecutar más comandos dentro del contenedor si es necesario
                         // Por ejemplo, correr tests, levantar servicios, etc.

@@ -2,19 +2,20 @@ pipeline {
     agent any
 
     stages {
-        // Clonar el repositorio desde GitHub
+        // Etapa para clonar el repositorio desde GitHub
         stage('Clone Repository') {
             steps {
                 git branch: 'master', url: 'https://github.com/Drifter624/Pokemon.git'
             }
         }
         
-        // Ejecutar pruebas unitarias
-        stage('Run Unit Tests') {
+        // Etapa para ejecutar un comando básico
+        stage('Run Commands') {
             steps {
                 script {
-                    // Ejecutar pruebas (por ejemplo, con Jest o Mocha en un proyecto Node.js)
-                    sh 'npm test'
+                    // Aquí puedes ejecutar cualquier comando, como 'ls' para listar archivos del directorio
+                    sh 'echo "Running basic commands..."'
+                    sh 'ls -la' // Listar todos los archivos y directorios
                 }
             }
         }

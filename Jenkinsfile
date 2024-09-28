@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     stages {
         // Clonar el repositorio desde GitHub
         stage('Clone Repository') {
@@ -9,32 +9,17 @@ pipeline {
             }
         }
         
-        // Construir la imagen Docker con un nombre específico
-        stage('Build Docker Image') {
+        // Ejecutar pruebas unitarias
+        stage('Run Unit Tests') {
             steps {
                 script {
-                    // El método 'docker.build' construye la imagen usando un Dockerfile del repositorio clonado
-                    def customImage = docker.build('pokemon-api-docker', '.')
-                }
-            }
-        }
-        
-        // Levantar el contenedor con la imagen construida
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    // Correr el contenedor basado en la imagen que construiste en la etapa anterior
-                    customImage.run('-d --name pokemon-container') {
-                        echo 'Docker container is up and running!'
-                        // Aquí puedes ejecutar más comandos dentro del contenedor si es necesario
-                        // Por ejemplo, correr tests, levantar servicios, etc.
-                    }
+                    // Ejecutar pruebas (por ejemplo, con Jest o Mocha en un proyecto Node.js)
+                    sh 'npm test'
                 }
             }
         }
     }
 
-    // Bloque 'post' para realizar acciones después del pipeline
     post {
         always {
             echo 'Pipeline completed.'

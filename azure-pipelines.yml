@@ -2,18 +2,33 @@
 # Conéctalo con GitHub y personalízalo para compilar, probar y desplegar tu proyecto.
 
 trigger:
-  - master  # Ejecuta el pipeline cada vez que se realiza un commit en la rama "master"
+  - master
 
 pool:
-  vmImage: 'ubuntu-latest'  # Especifica la imagen de la máquina que ejecutará el pipeline (Ubuntu más reciente)
+  vmImage: 'ubuntu-latest'
 
 steps:
-  # Tarea básica para imprimir un mensaje en la consola
-  - script: echo Hello, world!
-    displayName: 'Run a one-line script'
-
-  # Ejemplo de script de múltiples líneas
+  # Instalación de dependencias
   - script: |
-      echo Agrega otras tareas para construir, probar y desplegar tu proyecto.
-      echo Visita https://aka.ms/yaml para más información.
-    displayName: 'Run a multi-line script'
+      echo "Instalando dependencias..."
+      npm install
+    displayName: 'Instalar dependencias'
+
+  # Compilación del proyecto
+  - script: |
+      echo "Compilando el proyecto..."
+      npm run build
+    displayName: 'Compilar el proyecto'
+
+  # Ejecutar pruebas
+  - script: |
+      echo "Ejecutando pruebas..."
+      npm test
+    displayName: 'Ejecutar pruebas'
+
+  # Despliegue opcional
+  - script: |
+      echo "Implementando en producción..."
+      # Aquí agregarías los comandos necesarios para el despliegue
+    displayName: 'Desplegar aplicación'
+    condition: succeeded()  # Ejecuta el despliegue solo si los pasos anteriores han sido exitosos

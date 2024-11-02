@@ -1,19 +1,19 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Pipeline básico en YAML para Azure DevOps
+# Conéctalo con GitHub y personalízalo para compilar, probar y desplegar tu proyecto.
 
 trigger:
-- master
+  - master  # Ejecuta el pipeline cada vez que se realiza un commit en la rama "master"
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'  # Especifica la imagen de la máquina que ejecutará el pipeline (Ubuntu más reciente)
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  # Tarea básica para imprimir un mensaje en la consola
+  - script: echo Hello, world!
+    displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  # Ejemplo de script de múltiples líneas
+  - script: |
+      echo Agrega otras tareas para construir, probar y desplegar tu proyecto.
+      echo Visita https://aka.ms/yaml para más información.
+    displayName: 'Run a multi-line script'
